@@ -1,0 +1,103 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Never Out of Beta Player</title>
+  <meta name="description" content="Play audio and view referenced resources">
+  <meta name="author" content="twitter.com/woogoose">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/master.css" type="text/css" media="screen" charset="utf-8">
+</head>
+
+<body>
+    <script src="js/jquery-1.6.2.min.js"></script>
+    <script src="js/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            // Store references so that we don't need to traverse the dom constantly
+            player = $('#player').get(0);
+            $time = $('#time');
+
+            // Parse the uFormat and build a hash of citations - stops us from traversing
+            // the dom every time the player's timecode changes
+            citations = {};
+            $('li', $('ul.citations') ).each(function(el) {
+                var $this = $(this);
+                var timecode = parseInt($this.attr('id'), 10);
+                citations[timecode] = $this;
+                $('<a>')
+                    .addClass('timecode')
+                    .attr('href', '#' + timecode)
+                    .html(rectime(timecode))
+                    .prependTo($this);
+            });
+
+            // Callback that is fired every time player position is updated via playback
+            // or user seek
+            $(player).bind('timeupdate', function() {
+                var currentTime = parseInt(player.currentTime, 10);
+                $time.html(rectime(currentTime));
+
+                $.each(citations, function(i, el) {
+                    // Find the citation that should be set as the current one for this
+                    // time position
+                    if(i <= currentTime && !el.hasClass('current')) {
+                        $('li', $('ul.citations')).removeClass('current');
+                        el.addClass('current');
+                    }
+                });
+            });
+
+            // Seek when the URL hash changes
+            $(window).hashchange(function() {
+                player.currentTime = parseInt(location.hash.replace(/^#/, ''));
+            })
+        });
+
+        // A little helper that converts seconds to hh:mm:ss
+        function rectime(sec) {
+            var hr = Math.floor(sec / 3600);
+            var min = Math.floor((sec - (hr * 3600))/60);
+            sec -= ((hr * 3600) + (min * 60));
+            sec += ''; min += '';
+            while (min.length < 2) {min = '0' + min;}
+            while (sec.length < 2) {sec = '0' + sec;}
+            hr = (hr)?':'+hr:'';
+            return hr + min + ':' + sec;
+        }
+
+    </script>
+
+    <div id="container">
+        <header>
+            <h1>Never Out of Beta</h1>
+            <h2>Audio Player test</h2>
+        </header>
+
+        <div id="main" role="main">
+            <audio id="player" controls="true" src="audio/NeverOutOfBeta_episode_0.9.3.ogg">
+            </audio>
+            <h3 id="time">Position</h3>
+
+            <ul class="citations">
+                <li id="10">
+                    <a class="link" href="http://www.google.com">This is what happens at 10 seconds</a>
+                </li>
+                <li id="15">
+                    <a class="link" href="http://www.bbc.co.uk">This is what happens at 15 seconds</a>
+                </li>
+            </ul>
+        </div>
+
+        <footer>
+        </footer>
+    </div>
+
+</body>
+</html>
