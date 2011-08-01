@@ -12,71 +12,16 @@
 
 <body>
     <script src="js/jquery-1.6.2.min.js"></script>
+    <script src="js/jquery.noob.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-            // Store references so that we don't need to traverse the dom constantly
-            player = $('#player').get(0);
-            $time = $('#time');
-
-            // Parse the uFormat and build a hash of citations - stops us from traversing
-            // the dom every time the player's timecode changes
-            citations = {};
-            $('li', $('ul.citations') ).each(function(el) {
-                var $this = $(this);
-                var timecode = parseInt($this.attr('id'), 10);
-                citations[timecode] = $this;
-                $('<a>')
-                    .addClass('timecode')
-                    .attr('href', '#' + timecode)
-                    .html(rectime(timecode))
-                    .prependTo($this);
-            });
-
-            // Callback that is fired every time player position is updated via playback
-            // or user seek
-            $(player).bind('timeupdate', function() {
-                var currentTime = parseInt(player.currentTime, 10);
-                $time.html(rectime(currentTime));
-
-                $.each(citations, function(i, el) {
-                    // Find the citation that should be set as the current one for this
-                    // time position
-                    if(i <= currentTime && !el.hasClass('current')) {
-                        $('li', $('ul.citations')).removeClass('current');
-                        el.addClass('current');
-                    }
-                });
-            });
-
-            // Seek when the URL hash changes
-            $(window).hashchange(function() {
-                player.currentTime = parseInt(location.hash.replace(/^#/, ''));
-            })
+            $('#player-container').noobPlayer($('.uf-bookmarked-audio'));
         });
-
-        // A little helper that converts seconds to hh:mm:ss
-        function rectime(sec) {
-            var hr = Math.floor(sec / 3600);
-            var min = Math.floor((sec - (hr * 3600))/60);
-            sec -= ((hr * 3600) + (min * 60));
-            sec += ''; min += '';
-            while (min.length < 2) {min = '0' + min;}
-            while (sec.length < 2) {sec = '0' + sec;}
-            hr = (hr)?':'+hr:'';
-            return hr + min + ':' + sec;
-        }
-
     </script>
 
     <div id="container">
         <div id="main" role="main">
-            <div id="player-container" class="error">
-                <h3>Sub-standard browsing experience</h3>
-                <p>You can still download this podcast and view bookmarks, but you can improve your browsing
-                experience by upgrading to an HTML5 browser and ensuring that Javascript is enabled.</p>
-            </div>
-
-            <div class="bookmarked-audio">
+            <div class="uf-bookmarked-audio">
                 <div class="metadata">
                     <h1>Episode 0.9.3: hacker culture touching the normal world</h1>
                     <h2>July 29, 2011</h2>
@@ -112,7 +57,13 @@
                     </dd>
                 </dl>
             </div>
+
+            <div id="player-container" class="error">
+                <h3>Sub-standard browsing experience</h3>
+                <p>You can still download this podcast and view bookmarks, but why not improve your browsing experience by upgrading to an HTML5 browser and ensuring that Javascript is enabled?</p>
+            </div>
         </div>
+
 
         <footer>
         </footer>
