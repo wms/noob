@@ -15,12 +15,56 @@
     <script src="js/jquery.noob.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-            $('#player-container').noobPlayer($('.uf-bookmarked-audio'));
+           // $('#player-container').noobPlayer($('.uf-bookmarked-audio'));
+
+
+        $('.downloadLink').each(function(index, value) {
+            $(this).noobPlayer();
+        });
         });
     </script>
 
     <div id="container">
         <div id="main" role="main">
+
+            <div class="downloadLink"><a href="http://s3.amazonaws.com/n00b/NeverOutOfBeta_episode_0.9.3.mp3">Download NeverOutOfBeta_episode_0.9.3.mp3 (33.1mb)</a>
+
+            <h3>Bookmarks in this podcast:</h3>
+                <dl class="bookmarks">
+                    <dt>
+                        00:10
+                    </dt>
+                    <dd>
+                        <a class="link" href="http://www.google.com">Google1</a>
+                    </dd>
+                    <dt>
+                        00:20
+                    </dt>
+                    <dd>
+                        <a class="link" href="http://www.bbc.co.uk">BBC1</a>
+                    </dd>
+                </dl>
+            </div>
+
+
+            <div class="downloadLink"><a href="http://s3.amazonaws.com/n00b/NeverOutOfBeta_episode_0.9.4.mp3">Download NeverOutOfBeta_episode_0.9.4.mp3 (37.3mb)</a>
+            <h3>Bookmarks in this podcast:</h3>
+                <dl class="bookmarks">
+                    <dt>
+                        00:02
+                    </dt>
+                    <dd>
+                        <a class="link" href="http://www.google.com">Google2</a>
+                    </dd>
+                    <dt>
+                        00:05
+                    </dt>
+                    <dd>
+                        <a class="link" href="http://www.bbc.co.uk">BBC2</a>
+                    </dd>
+                </dl>
+            </div>
+
             <div class="uf-bookmarked-audio">
                 <div class="metadata">
                     <h1>Episode 0.9.3: hacker culture touching the normal world</h1>
@@ -41,27 +85,9 @@
                     </div>
                     <a class="source" href="audio/NeverOutOfBeta_episode_0.9.3.ogg">Download</a>
                 </div>
-                <h3>Bookmarks in this podcast:</h3>
-                <dl class="bookmarks">
-                    <dt>
-                        00:10
-                    </dt>
-                    <dd>
-                        <a class="link" href="http://www.google.com">Google</a>
-                    </dd>
-                    <dt>
-                        00:20
-                    </dt>
-                    <dd>
-                        <a class="link" href="http://www.bbc.co.uk">BBC</a>
-                    </dd>
-                </dl>
+                
             </div>
 
-            <div id="player-container" class="error">
-                <h3>Sub-standard browsing experience</h3>
-                <p>You can still download this podcast and view bookmarks, but why not improve your browsing experience by upgrading to an HTML5 browser and ensuring that Javascript is enabled?</p>
-            </div>
         </div>
 
 
