@@ -7,10 +7,10 @@
             this.removeClass('error').empty();
             // Prepare HTML5 audio player
             var audioUrl = $('.metadata a', uf).attr('href');
-            var $player = $('<audio controls="controls" preload="metadata">\
-                                <source src="'+audioUrl+'" type="audio/ogg" /> \
-                            </audio>');
-            
+            var $player = $('<audio controls="controls" preload="metadata">'
+                          + '     <source src="' + audioUrl + '" type="audio/ogg" />'
+                          + '</audio>');
+
             /* Append player to DOM and register callback that is fired every time
              * the player's position updates
              */
@@ -22,7 +22,7 @@
                         $('dl dt', uf).removeClass('current');
                         element.addClass('current');
                     }
-                })
+                });
             });
 
             /* Scan uFormat
@@ -31,7 +31,7 @@
              */
              $('dl dt', uf).each(function(el) {
                  $this = $(this);
-                 seconds = $this.noobPlayer('timeInSeconds',
+                 var seconds = $this.noobPlayer('timeInSeconds',
                      $this.html().trim()
                  );
                  bookmarks[seconds] = $this;
@@ -42,11 +42,11 @@
               */
              $('dl dt', uf).bind('click', function() {
                  // copypasta
-                 seconds = $(this).noobPlayer('timeInSeconds',
+                 var seconds = $(this).noobPlayer('timeInSeconds',
                      $(this).html().trim()
                  );
                  $player.get(0).currentTime = seconds;
-             })
+             });
         },
 
         /*
@@ -55,10 +55,10 @@
          */
         timeInSeconds: function(time) {
             var components = time.split(':');
-            var r = parseInt(components[1], 10) + parseInt(components[0]) * 60;
+            var r = parseInt(components[1], 10) + parseInt(components[0], 10) * 60;
             return parseInt(r, 10);
         }
-    }
+    };
 
     $.fn.noobPlayer = function(method) {
         // Method calling logic
@@ -68,6 +68,6 @@
             return methods.init.apply( this, arguments );
         } else {
             $.error( 'Method ' +  method + ' does not exist on jQuery.noobPlayer' );
-        }    
+        }
     };
 })(jQuery);
