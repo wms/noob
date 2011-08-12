@@ -1,5 +1,5 @@
 (function($) {
-    var bookmarks = {};
+//    var bookmarks = {};
 
     var methods = {
         init: function() {
@@ -8,8 +8,10 @@
             // Prepare HTML5 audio player
             var audioUrl = $(this).find('a:first').attr('href');
             var $player = $('<audio controls="controls" preload="metadata">'
-                          + '     <source src="' + audioUrl + '" type="audio/ogg" />'
+                          + '    <source src="' + audioUrl + '" type="audio/ogg" />'
                           + '</audio>');
+
+            $player.bookmarks = {};
 
             /* Append player to DOM and register callback that is fired every time
              * the player's position updates
@@ -19,7 +21,7 @@
             $player.appendTo(this).bind('timeupdate', function() {
                 var currentTime = $player.get(0).currentTime;
 
-                $.each(bookmarks, function(index, element) {
+                $.each($player.bookmarks, function(index, element) {
                     if(index <= currentTime && !element.hasClass('current')) {
                         $(this).find('dl dt').removeClass('current');
                         element.addClass('current');
@@ -36,7 +38,7 @@
                  var seconds = $this.noobPlayer('timeInSeconds',
                      $this.html().trim()
                  );
-                 bookmarks[seconds] = $this;
+                 $player.bookmarks[seconds] = $this;
              });
 
              /* Bind a callback that seeks the audio player when a bookmark
@@ -71,8 +73,5 @@
         } else {
             $.error( 'Method ' +  method + ' does not exist on jQuery.noobPlayer' );
         }
-
-
-
     };
 })(jQuery);
