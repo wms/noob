@@ -8,7 +8,7 @@
             // Prepare HTML5 audio player
             var audioUrl = $(this).find('a:first').attr('href');
             var $player = $('<audio controls="controls" preload="metadata">'
-                          + '    <source src="' + audioUrl + '" type="audio/ogg" />'
+                          + '    <source src="' + audioUrl + '" type="audio/mp3" />' // TODO support ogg
                           + '</audio>');
 
             $player.bookmarks = {};
@@ -23,8 +23,9 @@
 
                 $.each($player.bookmarks, function(index, element) {
                     if(index <= currentTime && !element.hasClass('current')) {
-                        $(this).find('dl dt').removeClass('current');
+                        $(this).parent().find('dd, dt').removeClass('current');
                         element.addClass('current');
+                        element.next().addClass('current');
                     }
                 });
             });

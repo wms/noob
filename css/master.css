@@ -112,9 +112,14 @@ dt {
     float: left;
     margin-bottom: 1em;
 }
-dt.current {
+dl, dt {
+}
+dt.current, dd.current {
     background-color: blue;
     color: white;
+}
+dd.current a {
+    color: #fff;
 }
 dd {
     margin-left: 3em;
