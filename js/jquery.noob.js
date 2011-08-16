@@ -1,26 +1,31 @@
 (function($) {
-    var bookmarks = {};
+//    var bookmarks = {};
 
     var methods = {
-        init: function(uf) {
+        init: function() {
             // Remove error message
-            this.removeClass('error').empty();
+           // $(this).removeClass('error').empty();
             // Prepare HTML5 audio player
-            var audioUrl = $('.metadata a', uf).attr('href');
+            var audioUrl = $(this).find('a:first').attr('href');
             var $player = $('<audio controls="controls" preload="metadata">'
-                          + '     <source src="' + audioUrl + '" type="audio/ogg" />'
+                          + '    <source src="' + audioUrl + '" type="audio/mp3" />' // TODO support ogg
                           + '</audio>');
+
+            $player.bookmarks = {};
 
             /* Append player to DOM and register callback that is fired every time
              * the player's position updates
              */
+
+          //  $player.appendTo(this); return;
             $player.appendTo(this).bind('timeupdate', function() {
                 var currentTime = $player.get(0).currentTime;
 
-                $.each(bookmarks, function(index, element) {
+                $.each($player.bookmarks, function(index, element) {
                     if(index <= currentTime && !element.hasClass('current')) {
-                        $('dl dt', uf).removeClass('current');
+                        $(this).parent().find('dd, dt').removeClass('current');
                         element.addClass('current');
+                        element.next().addClass('current');
                     }
                 });
             });
@@ -29,18 +34,18 @@
              * Extract and convert time of each bookmark
              * Store in hash to minimise DOM traversal
              */
-             $('dl dt', uf).each(function(el) {
+             $(this).find('dl dt').each(function(el) {
                  $this = $(this);
                  var seconds = $this.noobPlayer('timeInSeconds',
                      $this.html().trim()
                  );
-                 bookmarks[seconds] = $this;
+                 $player.bookmarks[seconds] = $this;
              });
 
              /* Bind a callback that seeks the audio player when a bookmark
               * is clicked
               */
-             $('dl dt', uf).bind('click', function() {
+             $(this).find('dl dt').bind('click', function() {
                  // copypasta
                  var seconds = $(this).noobPlayer('timeInSeconds',
                      $(this).html().trim()

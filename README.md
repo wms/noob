@@ -1,0 +1,1 @@
+A jQuery plugin that adds a HTML5 audio player to an MP3 and updates a list of notes on that MP3. So, you give it a bunch of timecodes and links, and it will highlight the appropriate link at the appropriate time.
